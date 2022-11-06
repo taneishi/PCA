@@ -16,7 +16,7 @@ For the validation, I used Fisher's famous iris dataset. It is included in the `
 
 ### pca.py
 
-<img src="figure/pca.png" width="500" alt="pca" />
+<img src="figure/pca.png" width="700" alt="pca" />
 
 ## PCA of Chemical Compounds
 
@@ -32,7 +32,7 @@ The PCA as dimensionality reduction is useful in the analysis because the Morgan
 
 ### fp.py
 
-<img src="figure/fp.png" width="500" alt="fp" />
+<img src="figure/fp.png" width="700" alt="fp" />
 
 ```
 radius  0 matrix shape (257, 4096)  3.662sec
