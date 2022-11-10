@@ -3,21 +3,13 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import scipy.interpolate
 from sklearn import preprocessing
+import sklearn.decomposition
 from rdkit import Chem
 from rdkit.Chem import AllChem
 import argparse
 import timeit
 
-def pca(X, npc=2):
-    # calculate eigenvalues(l) and eigenvectors(w) of the covariance matrix
-    C = np.cov(X.T)
-    l,w = np.linalg.eig(C)
-
-    # sort eigenvectors by eigenvalue in descending order
-    w = w[:,np.argsort(l)[::-1]]
-    # T = X*W
-    pc = np.dot(X, w[:,:npc])
-    return pc
+from pca import PCA
 
 def fp_mds(args, radius):
     fps = []
@@ -39,7 +31,9 @@ def fp_mds(args, radius):
     mat = preprocessing.normalize(mat)
 
     start_time = timeit.default_timer()
-    pcs = np.real(pca(mat, npc=2))
+    pcs = np.real(PCA(mat, npc=2, method='eig').pc())
+    #pcs = sklearn.decomposition.PCA(n_components=2, svd_solver='full').fit_transform(mat)
+    #pcs = sklearn.decomposition.PCA(n_components=2, svd_solver='randomized').fit_transform(mat)
     print('radius %2d matrix shape %s %6.3fsec' % (radius, mat.shape, timeit.default_timer() - start_time))
 
     # Set up a regular grid of interpolation points

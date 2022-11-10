@@ -35,7 +35,7 @@ class PCA:
     def eig(self):
         # calculate eigenvalues(l) and eigenvectors(w) of the covariance matrix
         C = np.cov(self.df.T)
-        self.l,self.w = np.linalg.eig(C)
+        self.l, self.w = np.linalg.eig(C)
 
         # sort eigenvectors by eigenvalue in descending order
         self.w = self.w[:, np.argsort(self.l)[::-1]]
