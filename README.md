@@ -32,15 +32,30 @@ The PCA as dimensionality reduction is useful in the analysis because the Morgan
 
 ### fp.py
 
-<img src="figure/fp.png" width="700" alt="PCA of chemical fingerprints" />
+<img src="figure/fp_eig.png" width="700" alt="PCA of chemical fingerprints" />
 
 ```
-radius  0 matrix shape (257, 4096)  3.662sec
-radius  2 matrix shape (257, 4096)  6.364sec
-radius  4 matrix shape (257, 4096) 11.596sec
-radius  6 matrix shape (257, 4096) 12.559sec
-radius  8 matrix shape (257, 4096) 12.483sec
-radius 10 matrix shape (257, 4096) 12.563sec
+PCA using implmented PCA
+radius  0 matrix shape (257, 4096)  3.25 sec
+radius  2 matrix shape (257, 4096)  5.83 sec
+radius  4 matrix shape (257, 4096) 10.20 sec
+radius  6 matrix shape (257, 4096) 11.25 sec
+radius  8 matrix shape (257, 4096) 11.40 sec
+radius 10 matrix shape (257, 4096) 11.30 sec
+PCA using sklearn full SVD
+radius  0 matrix shape (257, 4096)  0.10 sec
+radius  2 matrix shape (257, 4096)  0.11 sec
+radius  4 matrix shape (257, 4096)  0.10 sec
+radius  6 matrix shape (257, 4096)  0.11 sec
+radius  8 matrix shape (257, 4096)  0.10 sec
+radius 10 matrix shape (257, 4096)  0.11 sec
+PCA using sklearn truncated SVD
+radius  0 matrix shape (257, 4096)  0.03 sec
+radius  2 matrix shape (257, 4096)  0.03 sec
+radius  4 matrix shape (257, 4096)  0.03 sec
+radius  6 matrix shape (257, 4096)  0.03 sec
+radius  8 matrix shape (257, 4096)  0.03 sec
+radius 10 matrix shape (257, 4096)  0.03 sec
 ```
 
 ## Reference

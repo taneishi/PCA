@@ -20,28 +20,30 @@ class PCA:
 
     def svd(self):
         # SVD decomposite X to U*diag(S)*Wt
-        self.U, self.diagS, self.Wt = np.linalg.svd(self.df, full_matrices=False)
+        U, diagS, Wt = np.linalg.svd(self.df, full_matrices=False)
 
         # singular values are already sorted
-        assert np.all(self.diagS[:-1] >= self.diagS[1:]) 
+        assert np.all(diagS[:-1] >= diagS[1:])
 
         # T = X*W = U*S
-        pcXW = np.dot(self.df, self.Wt.T[:, :self.npc])
-        pcUdS = self.U[:, :self.npc] * self.diagS[:self.npc]
+        pcXW = np.dot(self.df, Wt.T[:, :self.npc])
+        pcUdS = U[:, :self.npc] * diagS[:self.npc]
+
         # these two ways return same results
         assert np.allclose(pcXW, pcUdS)
+
         self.score = pcUdS
 
     def eig(self):
         # calculate eigenvalues(l) and eigenvectors(w) of the covariance matrix
         C = np.cov(self.df.T)
-        self.l, self.w = np.linalg.eig(C)
+        l, w = np.linalg.eig(C)
 
         # sort eigenvectors by eigenvalue in descending order
-        self.w = self.w[:, np.argsort(self.l)[::-1]]
+        w = w[:, np.argsort(l)[::-1]]
 
         # T = X*W
-        self.score = np.dot(self.df, self.w[:, :self.npc])
+        self.score = np.dot(self.df, w[:, :self.npc])
 
     def pc(self):
         if self.method == 'svd':

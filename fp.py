@@ -11,7 +11,7 @@ import timeit
 
 from pca import PCA
 
-def fp_mds(args, radius):
+def fp_mds(args, radius, method):
     fps = []
     bit_info = {}
     solubility = []
@@ -31,16 +31,20 @@ def fp_mds(args, radius):
     mat = preprocessing.normalize(mat)
 
     start_time = timeit.default_timer()
-    pcs = np.real(PCA(mat, npc=2, method='eig').pc())
-    #pcs = sklearn.decomposition.PCA(n_components=2, svd_solver='full').fit_transform(mat)
-    #pcs = sklearn.decomposition.PCA(n_components=2, svd_solver='randomized').fit_transform(mat)
-    print('radius %2d matrix shape %s %6.3fsec' % (radius, mat.shape, timeit.default_timer() - start_time))
+
+    if method == 'eig':
+        pcs = np.real(PCA(mat, npc=2, method='eig').pc())
+    elif method == 'full':
+        pcs = sklearn.decomposition.PCA(n_components=2, svd_solver='full').fit_transform(mat)
+    elif method == 'randomized':
+        pcs = sklearn.decomposition.PCA(n_components=2, svd_solver='randomized').fit_transform(mat)
+    print('radius %2d matrix shape %s %5.2f sec' % (radius, mat.shape, timeit.default_timer() - start_time))
 
     # Set up a regular grid of interpolation points
     xi, yi = np.linspace(pcs[:, 0].min(), pcs[:, 0].max()), np.linspace(pcs[:, 1].min(), pcs[:, 1].max())
     xi, yi = np.meshgrid(xi, yi)
 
-    # Interpolate
+    # Interpolation
     rbf = scipy.interpolate.Rbf(pcs[:, 0], pcs[:, 1], solubility, function='linear', smooth=0.1)
     zi = rbf(xi, yi)
 
@@ -53,19 +57,25 @@ def main():
     args = parser.parse_args()
     print(vars(args))
 
-    plt.figure(figsize=(9, 6))
+    for method in ['eig', 'full', 'randomized']:
+        if method == 'eig':
+            print('PCA using implmented PCA')
+        elif method == 'full':
+            print('PCA using sklearn full SVD')
+        elif method == 'randomized':
+            print('PCA using sklearn truncated SVD')
+        plt.figure(figsize=(9, 6))
+        for index, radius in enumerate(range(0, 11, 2), 1):
+            zi, pcs, solubility = fp_mds(args, radius, method)
 
-    for index, radius in enumerate([0, 2, 4, 6, 8, 10], 1):
-        zi, pcs, solubility = fp_mds(args, radius)
+            plt.subplot(2, 3, index)
+            plt.title('ecfp%d %dbits' % (radius, args.nbits))
+            plt.imshow(zi, vmin=zi.min(), vmax=zi.max(), origin='lower', cmap='RdYlGn_r', aspect='auto',
+                    extent=[pcs[:, 0].min(), pcs[:, 0].max(), pcs[:, 1].min(), pcs[:, 1].max()])
+            plt.scatter(pcs[:, 0], pcs[:, 1], c=solubility, cmap='RdYlGn_r')
 
-        plt.subplot(2, 3, index)
-        plt.title('ecfp%d %dbits' % (radius, args.nbits))
-        plt.imshow(zi, vmin=zi.min(), vmax=zi.max(), origin='lower', cmap='RdYlGn_r', aspect='auto',
-                extent=[pcs[:, 0].min(), pcs[:, 0].max(), pcs[:, 1].min(), pcs[:, 1].max()])
-        plt.scatter(pcs[:, 0], pcs[:, 1], c=solubility, cmap='RdYlGn_r')
-
-    plt.tight_layout()
-    plt.savefig('figure/fp.png')
+        plt.tight_layout()
+        plt.savefig('figure/fp_%s.png' % (method))
 
 if __name__ == '__main__':
     main()
