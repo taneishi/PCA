@@ -53,14 +53,14 @@ class PCA:
         self.score[:, 1] = -self.score[:, 1]
         return self.score
 
-def plot(df):
+def plot(df, columns):
     for name in df['Species'].unique():
         cond = df['Species'] == name
-        plt.plot(df.loc[cond, 'PC1'], df.loc[cond, 'PC2'], 'o', label=name)
+        plt.plot(df.loc[cond, columns[0]], df.loc[cond, columns[1]], 'o', label=name)
     plt.grid(True)
     plt.legend(framealpha=0.5)
 
-def main():
+def main(columns=['PC1', 'PC2']):
     np.set_printoptions(precision=4, threshold=30)
 
     # Fisher iris data
@@ -77,24 +77,24 @@ def main():
     plt.subplot(1, 3, 1)
     plt.title('Singular value decomposition')
     pca_svd = PCA(values, method='svd')
-    score = pd.DataFrame(pca_svd.pc(), columns=['PC1', 'PC2'])
+    score = pd.DataFrame(pca_svd.pc(), columns=columns)
     score = pd.concat([df, score], axis=1)
-    plot(score)
+    plot(score, columns)
 
     plt.subplot(1, 3, 2)
     plt.title('Eigenvalue decomposition')
     pca_eig = PCA(values, method='eig')
-    score = pd.DataFrame(pca_eig.pc(), columns=['PC1', 'PC2'])
+    score = pd.DataFrame(pca_eig.pc(), columns=columns)
     score = pd.concat([df, score], axis=1)
-    plot(score)
+    plot(score, columns)
 
     plt.subplot(1, 3, 3)
     plt.title('Principal Component Analysis of scikit-learn')
     pca_sklearn = sklearn.decomposition.PCA(n_components=2)
     score = pca_sklearn.fit_transform(values)
-    score = pd.DataFrame(score, columns=['PC1', 'PC2'])
+    score = pd.DataFrame(score, columns=columns)
     score = pd.concat([df, score], axis=1)
-    plot(score)
+    plot(score, columns)
 
     assert np.allclose(score[['PC1', 'PC2']], pca_svd.pc())
 

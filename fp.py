@@ -59,7 +59,7 @@ def main():
 
     for method in ['eig', 'full', 'randomized']:
         if method == 'eig':
-            print('PCA using implmented PCA')
+            print('PCA using implemented in pca.py')
         elif method == 'full':
             print('PCA using sklearn full SVD')
         elif method == 'randomized':
