@@ -35,28 +35,38 @@ The PCA as dimensionality reduction is useful in the analysis because the Morgan
 <img src="figure/fp_eig.png" width="700" alt="PCA of chemical fingerprints" />
 
 ```
-PCA using implmented PCA
-radius  0 matrix shape (257, 4096)  3.25 sec
-radius  2 matrix shape (257, 4096)  5.83 sec
-radius  4 matrix shape (257, 4096) 10.20 sec
-radius  6 matrix shape (257, 4096) 11.25 sec
-radius  8 matrix shape (257, 4096) 11.40 sec
-radius 10 matrix shape (257, 4096) 11.30 sec
+PCA using eig implemented in pca.py
+radius  0 matrix shape (257, 4096)  3.33 sec
+radius  2 matrix shape (257, 4096)  5.94 sec
+radius  4 matrix shape (257, 4096) 11.10 sec
+radius  6 matrix shape (257, 4096) 12.26 sec
+radius  8 matrix shape (257, 4096) 12.32 sec
+radius 10 matrix shape (257, 4096) 12.11 sec
+PCA using svd implemented in pca.py
+radius  0 matrix shape (257, 4096)  0.13 sec
+radius  2 matrix shape (257, 4096)  0.13 sec
+radius  4 matrix shape (257, 4096)  0.14 sec
+radius  6 matrix shape (257, 4096)  0.13 sec
+radius  8 matrix shape (257, 4096)  0.13 sec
+radius 10 matrix shape (257, 4096)  0.13 sec
 PCA using sklearn full SVD
 radius  0 matrix shape (257, 4096)  0.10 sec
-radius  2 matrix shape (257, 4096)  0.11 sec
+radius  2 matrix shape (257, 4096)  0.10 sec
 radius  4 matrix shape (257, 4096)  0.10 sec
-radius  6 matrix shape (257, 4096)  0.11 sec
+radius  6 matrix shape (257, 4096)  0.10 sec
 radius  8 matrix shape (257, 4096)  0.10 sec
-radius 10 matrix shape (257, 4096)  0.11 sec
-PCA using sklearn truncated SVD
+radius 10 matrix shape (257, 4096)  0.10 sec
+PCA using sklearn randomized SVD
 radius  0 matrix shape (257, 4096)  0.03 sec
 radius  2 matrix shape (257, 4096)  0.03 sec
 radius  4 matrix shape (257, 4096)  0.03 sec
 radius  6 matrix shape (257, 4096)  0.03 sec
-radius  8 matrix shape (257, 4096)  0.03 sec
-radius 10 matrix shape (257, 4096)  0.03 sec
+radius  8 matrix shape (257, 4096)  0.04 sec
+radius 10 matrix shape (257, 4096)  0.02 sec
 ```
+
+The method using SVD is less computationally intensive and faster than Eig.
+Randomized SVD is even faster for large matrices.
 
 ## Reference
 

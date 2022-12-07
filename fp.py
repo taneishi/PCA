@@ -2,14 +2,13 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import scipy.interpolate
-from sklearn import preprocessing
 import sklearn.decomposition
 from rdkit import Chem
 from rdkit.Chem import AllChem
 import argparse
 import timeit
 
-from pca import PCA
+from pca import scale, PCA
 
 def fp_mds(args, radius, method):
     fps = []
@@ -28,12 +27,14 @@ def fp_mds(args, radius, method):
     for i, fp in enumerate(fps):
         mat[i, fp] = 1.
 
-    mat = preprocessing.normalize(mat)
+    mat = scale(mat, center=True, scale=True)
 
     start_time = timeit.default_timer()
 
     if method == 'eig':
         pcs = np.real(PCA(mat, npc=2, method='eig').pc())
+    elif method == 'svd':
+        pcs = PCA(mat, npc=2, method='svd').pc()
     elif method == 'full':
         pcs = sklearn.decomposition.PCA(n_components=2, svd_solver='full').fit_transform(mat)
     elif method == 'randomized':
@@ -57,13 +58,15 @@ def main():
     args = parser.parse_args()
     print(vars(args))
 
-    for method in ['eig', 'full', 'randomized']:
+    for method in ['eig', 'svd', 'full', 'randomized']:
         if method == 'eig':
-            print('PCA using implemented in pca.py')
+            print('PCA using %s implemented in pca.py' % (method))
+        elif method == 'svd':
+            print('PCA using %s implemented in pca.py' % (method))
         elif method == 'full':
-            print('PCA using sklearn full SVD')
+            print('PCA using sklearn %s SVD' % (method))
         elif method == 'randomized':
-            print('PCA using sklearn truncated SVD')
+            print('PCA using sklearn %s SVD' % (method))
         plt.figure(figsize=(9, 6))
         for index, radius in enumerate(range(0, 11, 2), 1):
             zi, pcs, solubility = fp_mds(args, radius, method)

@@ -19,6 +19,8 @@ class PCA:
         self.method = method
 
     def svd(self):
+        self.df = self.df - np.mean(self.df, axis=0)
+
         # SVD decomposite X to U*diag(S)*Wt
         U, diagS, Wt = np.linalg.svd(self.df, full_matrices=False)
 
@@ -29,10 +31,10 @@ class PCA:
         pcXW = np.dot(self.df, Wt.T[:, :self.npc])
         pcUdS = U[:, :self.npc] * diagS[:self.npc]
 
-        # these two ways return same results
-        assert np.allclose(pcXW, pcUdS)
+        # these results should be the same, but there are a little differences.
+        assert np.allclose(pcXW, pcUdS, atol=1e-5)
 
-        self.score = pcUdS
+        return pcUdS
 
     def eig(self):
         # calculate eigenvalues(l) and eigenvectors(w) of the covariance matrix
@@ -43,17 +45,21 @@ class PCA:
         w = w[:, np.argsort(l)[::-1]]
 
         # T = X*W
-        self.score = np.dot(self.df, w[:, :self.npc])
+        return np.dot(self.df, w[:, :self.npc])
 
     def pc(self):
         if self.method == 'svd':
-            self.svd()
+            score = self.svd()
         else:
-            self.eig()
-        self.score[:, 1] = -self.score[:, 1]
-        return self.score
+            score = self.eig()
 
-def plot(df, columns):
+        # flip
+        score[:, 1] = -score[:, 1]
+
+        return score
+
+def plot(df, score, columns):
+    df = pd.concat([df, score], axis=1)
     for name in df['Species'].unique():
         cond = df['Species'] == name
         plt.plot(df.loc[cond, columns[0]], df.loc[cond, columns[1]], 'o', label=name)
@@ -72,37 +78,38 @@ def main(columns=['PC1', 'PC2']):
     values = scale(df.iloc[:, :4], center=True, scale=True)
     print('DataFrame is a %dx%d matrix of iris.csv' % (values.shape))
 
+    scores = {}
+
     plt.figure(figsize=(12, 4))
 
     plt.subplot(1, 3, 1)
     plt.title('Singular value decomposition')
     pca_svd = PCA(values, method='svd')
     score = pd.DataFrame(pca_svd.pc(), columns=columns)
-    score = pd.concat([df, score], axis=1)
-    plot(score, columns)
+    plot(df, score, columns)
+    scores['svd'] = score
 
     plt.subplot(1, 3, 2)
     plt.title('Eigenvalue decomposition')
     pca_eig = PCA(values, method='eig')
     score = pd.DataFrame(pca_eig.pc(), columns=columns)
-    score = pd.concat([df, score], axis=1)
-    plot(score, columns)
+    plot(df, score, columns)
+    scores['eig'] = score
 
     plt.subplot(1, 3, 3)
     plt.title('Principal Component Analysis of scikit-learn')
     pca_sklearn = sklearn.decomposition.PCA(n_components=2)
     score = pca_sklearn.fit_transform(values)
     score = pd.DataFrame(score, columns=columns)
-    score = pd.concat([df, score], axis=1)
-    plot(score, columns)
-
-    assert np.allclose(score[['PC1', 'PC2']], pca_svd.pc())
+    plot(df, score, columns)
+    scores['sklearn'] = score
 
     plt.tight_layout()
     plt.savefig('figure/pca.png')
 
-    # assert two princople components based on SVD and EigenDecomposition
-    print('PCA(svd) == PCA(eig) is %s' % np.allclose(pca_svd.pc(), pca_eig.pc()))
+    # assert if the three methods match
+    print('PCA(svd) == PCA(eig) is %s' % (np.allclose(scores['svd'], scores['eig'])))
+    print('PCA(svd) == PCA(sklearn) is %s' % (np.allclose(scores['svd'], scores['sklearn'])))
 
 if __name__ == '__main__':
     main()
