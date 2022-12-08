@@ -13,26 +13,31 @@ def scale(df, center=True, scale=True):
     return df
 
 class PCA:
-    def __init__(self, df, npc=2, method='svd'):
+    def __init__(self, df, npc=2, method='svd', validation=False):
         self.df = df
         self.npc = npc
         self.method = method
+        self.validation = validation
 
-    def svd(self):
+        # center data
         self.df = self.df - np.mean(self.df, axis=0)
 
+    def svd(self):
         # SVD decomposite X to U*diag(S)*Wt
         U, diagS, Wt = np.linalg.svd(self.df, full_matrices=False)
 
         # singular values are already sorted
-        assert np.all(diagS[:-1] >= diagS[1:])
+        if self.validation:
+            assert np.all(diagS[:-1] >= diagS[1:])
 
-        # T = X*W = U*S
-        pcXW = np.dot(self.df, Wt.T[:, :self.npc])
+        # T = U*S
         pcUdS = U[:, :self.npc] * diagS[:self.npc]
 
-        # these results should be the same, but there are a little differences.
-        assert np.allclose(pcXW, pcUdS, atol=1e-5)
+        # T = X*W = U*S
+        # these results should be the same
+        if self.validation:
+            pcXW = np.dot(self.df, Wt.T[:, :self.npc])
+            assert np.allclose(pcXW, pcUdS)
 
         return pcUdS
 
@@ -84,14 +89,14 @@ def main(columns=['PC1', 'PC2']):
 
     plt.subplot(1, 3, 1)
     plt.title('Singular value decomposition')
-    pca_svd = PCA(values, method='svd')
+    pca_svd = PCA(values, method='svd', validation=True)
     score = pd.DataFrame(pca_svd.pc(), columns=columns)
     plot(df, score, columns)
     scores['svd'] = score
 
     plt.subplot(1, 3, 2)
     plt.title('Eigenvalue decomposition')
-    pca_eig = PCA(values, method='eig')
+    pca_eig = PCA(values, method='eig', validation=True)
     score = pd.DataFrame(pca_eig.pc(), columns=columns)
     plot(df, score, columns)
     scores['eig'] = score

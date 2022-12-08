@@ -37,35 +37,35 @@ The PCA as dimensionality reduction is useful in the analysis because the Morgan
 ```
 PCA using eig implemented in pca.py
 radius  0 matrix shape (257, 4096)  3.33 sec
-radius  2 matrix shape (257, 4096)  5.94 sec
-radius  4 matrix shape (257, 4096) 11.10 sec
-radius  6 matrix shape (257, 4096) 12.26 sec
-radius  8 matrix shape (257, 4096) 12.32 sec
-radius 10 matrix shape (257, 4096) 12.11 sec
+radius  2 matrix shape (257, 4096)  5.88 sec
+radius  4 matrix shape (257, 4096) 11.06 sec
+radius  6 matrix shape (257, 4096) 11.74 sec
+radius  8 matrix shape (257, 4096) 11.69 sec
+radius 10 matrix shape (257, 4096) 11.78 sec
 PCA using svd implemented in pca.py
 radius  0 matrix shape (257, 4096)  0.13 sec
 radius  2 matrix shape (257, 4096)  0.13 sec
-radius  4 matrix shape (257, 4096)  0.14 sec
+radius  4 matrix shape (257, 4096)  0.13 sec
 radius  6 matrix shape (257, 4096)  0.13 sec
 radius  8 matrix shape (257, 4096)  0.13 sec
 radius 10 matrix shape (257, 4096)  0.13 sec
 PCA using sklearn full SVD
 radius  0 matrix shape (257, 4096)  0.10 sec
-radius  2 matrix shape (257, 4096)  0.10 sec
+radius  2 matrix shape (257, 4096)  0.11 sec
 radius  4 matrix shape (257, 4096)  0.10 sec
 radius  6 matrix shape (257, 4096)  0.10 sec
 radius  8 matrix shape (257, 4096)  0.10 sec
 radius 10 matrix shape (257, 4096)  0.10 sec
 PCA using sklearn randomized SVD
 radius  0 matrix shape (257, 4096)  0.03 sec
-radius  2 matrix shape (257, 4096)  0.03 sec
-radius  4 matrix shape (257, 4096)  0.03 sec
-radius  6 matrix shape (257, 4096)  0.03 sec
-radius  8 matrix shape (257, 4096)  0.04 sec
+radius  2 matrix shape (257, 4096)  0.02 sec
+radius  4 matrix shape (257, 4096)  0.02 sec
+radius  6 matrix shape (257, 4096)  0.02 sec
+radius  8 matrix shape (257, 4096)  0.02 sec
 radius 10 matrix shape (257, 4096)  0.02 sec
 ```
 
-The method using SVD is less computationally intensive and faster than Eig.
+The method using SVD is more stable and faster in pratical use than the Eig implementation, although the computational cmoplexity is the same.
 Randomized SVD is even faster for large matrices.
 
 ## Reference
