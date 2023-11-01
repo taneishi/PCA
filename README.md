@@ -246,7 +246,7 @@ T = X * Vt.T
 The eigenvalue $e_i$ of the covariance matrix $C = \prescript{t}{}{X} X / (N-1)$ and the singular value $\sigma_i$ of $X$ are in the relation $e_i = \lambda_i^2 / (N-1)$.
 We can see that if we take the singular value decomposition of $X$ as $V = W$, then we have
 ```math
-\prescript{t}{}{X} X = \prescript{t}{}{(U \Sigma \prescript{t}{}{W})} U \Sigma \prescript{t}{}{W} = W \Sigma^2 \prescript{t}{}{W} = (N-1) W \Lambda \prescript{t}{}{W}.
+\prescript{t}{}{X} X = \prescript{t}{}{(U \Sigma \prescript{t}{}{W})} U \Sigma \prescript{t}{}{W} = W (\Sigma^2) \prescript{t}{}{W} = (N-1) W \Lambda \prescript{t}{}{W}.
 ```
 Therefore, we can also calculate the ratio of variance of the projected dimension from the singular values.
 
