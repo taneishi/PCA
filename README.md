@@ -3,7 +3,7 @@
 ## Introduction
 
 *Principal Component Analysis*, PCA is one of the most commonly used statistical methods for *pattern recognition* and *dimensionality reduction* on data defined in high dimensions.
-It was introduced by *Karl Pearson* in 1901[Pearson].
+It was introduced by *Karl Pearson* in 1901[^Pearson].
 Later, as computers reached practical use, it also became one of the most fundamental methods of *machine learning*.
 
 One of the most promising ideas to represent a subject more precisely is to use more variables, in other words, to represent the subject in higher dimension.
@@ -102,7 +102,7 @@ This is the basic idea of PCA.
 
 ## PCA
 
-First we take an example of Pearson's two dimensional dataset[Pearson].
+First we take an example of Pearson's two dimensional dataset[^Pearson].
 
 For this dataset, we perform mean centering. That is, $\mu_i = 0$ for all $i$.
 The centered dataset $X$ is shown in Figure 1.
@@ -255,7 +255,7 @@ Therefore, we can also calculate the ratio of variance of the projected dimensio
 In the first example, we visually confirmed the projection on a two-dimensional dataset.
 Next we will show an example where the results of the projection can be used to discriminate labels that are not used in the calculation, i.e., *unsupervised learning*, or more recently, the method is called *self-supervised learning*.
 
-We take Fisher's iris dataset as an example[Fisher].
+We take Fisher's iris dataset as an example[^Fisher].
 This famous dataset measures four items, sepal length, sepal width, petal length, and petal width, for three iris species, setosa, versicolor, and virginica.
 Again, we denote the i-th dimension of the dataset by $X_i$.
 
@@ -311,7 +311,7 @@ Applications of PCA include *quantitative structure-activity relationship*, QSAR
 
 ### Classification of Leukemia
 
-In 1999, Golub et al. classified two leukemia phenotypes, *Acute Lymphocytic Leukemia*, ALL and *Acute Myeloid Leukemia*, AML, based on gene expression levels using *clustering*[Golub].
+In 1999, Golub et al. classified two leukemia phenotypes, *Acute Lymphocytic Leukemia*, ALL and *Acute Myeloid Leukemia*, AML, based on gene expression levels using *clustering*[^Golub].
 The training dataset consisted of about 7,000 gene expression levels in 38 patients.
 Here, we unsupervised learned this dataset with PCA. The results of the projection is shown in Figure 7.
 
@@ -336,6 +336,6 @@ In particular, we note that PCA is equivalent to a linear *autoencoder*.
 
 ## References
 
-- [Pearson] K. Pearson, *On lines and planes of closest fit to systems of points in space*, **Philosophical Magazine**, 2, 559-572, 1901.
-- [Fisher] R.S. Fisher, *The use of multiple measurements in taxonomic problems*, **Annals of Eugenics**, 7 (2), 179–188. 1936.
-- [Golub] T.R. Golub et al., *Molecular Classification of Cancer: Class Discovery and Class Prediction by Gene Expression Monitoring*, **Science**, 286, pp531-537, 1999.
+[^Pearson]: K. Pearson, *On lines and planes of closest fit to systems of points in space*, **Philosophical Magazine**, 2, 559-572, 1901.
+[^Fisher]: R.S. Fisher, *The use of multiple measurements in taxonomic problems*, **Annals of Eugenics**, 7 (2), 179–188. 1936.
+[^Golub]: T.R. Golub et al., *Molecular Classification of Cancer: Class Discovery and Class Prediction by Gene Expression Monitoring*, **Science**, 286, pp531-537, 1999.
