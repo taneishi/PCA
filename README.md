@@ -106,7 +106,7 @@ and the covariance matrix $C$ is obtained by
 C = \frac{\prescript{t}{}{X} X}{N-1}.
 ```
 
-Actually calculating the covariance matrix of the centered dataset using the equation \eqref{cov}, we yield
+Actually calculating the covariance matrix of the centered dataset, we yield
 
 ```math
 \mathrm{cov}(X) = \begin{pmatrix*}[r] 6.266 & -3.381 \\ -3.381 & 1.913 \end{pmatrix*}.
