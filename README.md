@@ -1,4 +1,4 @@
-# Principal Component Analysis with Python
+# Principal Component Analysis
 
 ## Introduction
 
@@ -247,6 +247,8 @@ In 1999, Golub et al. classified two leukemia phenotypes, *Acute Lymphocytic Leu
 It can be seen that we are able to project the ALL and AML of the training dataset in a way that is almost linearly discriminative.
 
 While the number of genes in a gene expression dataset is high dimensional, it is not uncommon for the sample size to be an order of magnitude smaller due to the constraints of clinical research. In such cases, dimensionality reduction is an effective method.
+
+## Note
 
 Later, this *feature extraction* was performed by machine learning, which is called *deep learning*. In particular, we note that PCA is equivalent to linear *autoencoder*.
 
