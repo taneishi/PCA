@@ -178,7 +178,7 @@ The inverse transformation of the projection is given by $X = T W^{-1}$. Since $
 
 ## Implementation in Python
 
-As mentioned in the previous section, PCA calculation of is based on the eigendecomposition of a matrix. Here we show an example of calculation using the Python numerical package `numpy`.
+Here we show an example of calculation using the Python numerical package `numpy`. As mentioned in the previous section, PCA calculation of is based on the eigendecomposition of a matrix.
 
 ```python
 # Mean centering.
@@ -244,15 +244,11 @@ In 1999, Golub et al. classified two leukemia phenotypes, *Acute Lymphocytic Leu
 
 **Figure 2. Two-dimensional projection of gene expression dataset for ALL and AML patients using PCA.**
 
-It can be seen that we are able to project the ALL and AML of the training dataset in a way that is almost linearly discriminative.
+It can be seen that we are able to project the ALL and AML of the training dataset in a way that is almost linearly discriminative. In other words, PCA is an example of *unsupervised learning*.
 
-While the number of genes in a gene expression dataset is high dimensional, it is not uncommon for the sample size to be an order of magnitude smaller due to the constraints of clinical research. In such cases, dimensionality reduction is an effective method.
+While the number of genes in a gene expression dataset is high dimensional, it is not uncommon for the sample size to be an order of magnitude smaller due to the constraints of clinical research. In such cases, PCA, which extracts significant features by dimensionality reduction, is one of the effective methods.
 
-## Note
-
-Later, this *feature extraction* was performed by machine learning, which is called *deep learning*. In particular, we note that PCA is equivalent to linear *autoencoder*.
-
-## References
+Later, this *feature extraction* was performed by neural networks, which is called *deep learning*. In particular, we note that PCA is equivalent to a linear *autoencoder*.
 
 [^Pearson]: K. Pearson, *On lines and planes of closest fit to systems of points in space*, **Philosophical Magazine**, 2, 559-572, 1901.
 [^Golub]: T.R. Golub et al., *Molecular Classification of Cancer: Class Discovery and Class Prediction by Gene Expression Monitoring*, **Science**, 286, pp531-537, 1999.
