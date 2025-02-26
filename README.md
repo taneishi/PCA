@@ -10,7 +10,7 @@ One of the basic methods for such dimensionality reduction is a statistical meth
 
 ## Dataset
 
-First, we introduce a *dataset*. A dataset is a set of some or all of the data sampled for a given subject. For later calculations, we will formulate the dataset.
+First, we introduce a *dataset*. A dataset is a set of some or all of the data sampled for given subjects. For later calculations, we will formulate the dataset.
 
 Let $X$ denote an entire dataset consisting of $N$ samples. Assuming that each data component is contained in the *real number field* $\mathbf{R}$, we can represent the dataset $X$ by the $(N \times n)$-matrix $X = [x_{i,j}] \quad (x_{i,j} \in \mathbf{R})$ with samples as rows and dimensions as columns.
 
