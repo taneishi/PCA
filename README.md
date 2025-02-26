@@ -240,7 +240,7 @@ Applications of PCA include *quantitative structure-activity relationship*, QSAR
 
 In 1999, Golub et al. classified two leukemia phenotypes, *Acute Lymphocytic Leukemia*, ALL and *Acute Myeloid Leukemia*, AML, using *clustering* based on gene expression levels[^Golub]. The dataset used for training consisted of about 7,000 gene expression levels in 38 patients. The results of *unsupervised learning* of this dataset with PCA is shown in Figure 2.
 
-![Figure 2](figure/Golub_train.png)
+![Figure 2](figure/Golub_PCA.png)
 
 **Figure 2. Two-dimensional projection of gene expression dataset for ALL and AML patients using PCA.**
 
