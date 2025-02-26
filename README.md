@@ -14,7 +14,7 @@ First, we introduce a *dataset*. A dataset is a set of some or all of the data s
 
 Let $X$ denote an entire dataset consisting of $N$ samples. Assuming that each data component is contained in the *real number field* $\mathbf{R}$, we can represent the dataset $X$ by the $(N \times n)$-matrix $X = [x_{i,j}] \quad (x_{i,j} \in \mathbf{R})$ with samples as rows and dimensions as columns.
 
-Denote the $i$-dimensional components of all samples by the vertical vector $X_i = \prescript{t}{}{(x_{1,i}, x_{2,i}, \dots, x_{N,i})}$. Where $X_i$ is an element of the $N$-dimensional real vector space, $X_i \in \mathbf{R}^N$. Semantically, $X_i$ is a vector representing the $i$-th features.
+Denote the $i$-dimensional components of all samples by the vertical vector $X_i = \prescript{t}{}{(x_{1,i}, x_{2,i}, \dots, x_{N,i})}$. Where $X_i$ is an element of the $N$-dimensional real vector space, i.e., $X_i \in \mathbf{R}^N$. Semantically, $X_i$ is a vector representing the $i$-th features.
 
 The vector and matrix representations defined here are used in the following calculations. As an example, take the two-dimensional dataset used by Pearson[^Pearson], which is an example of $N=10, n=2$ in the notation introduced here.
 
@@ -43,7 +43,7 @@ In preparation for the computation of PCA, we introduce the basic *statistics* t
 The variance is the sum of the squares of the distances from the mean averaged over $N-1$ for each dimension of the dataset. Let $\mu_i$ denote the mean of the vector $X_i$,
 
 ```math
-\mu_i = \sum_{j=1}^N \frac{x_{j,i}}{N},
+\mu_i = \sum_{j=1}^N \frac{x_{j,i}}{N}
 ```
 
 and the variance of $X_i$ is defined as
@@ -52,7 +52,7 @@ and the variance of $X_i$ is defined as
 \mathrm{var}(X_i) = \sum_{j=1}^N \frac{(x_{j,i}-\mu_i)^2}{N-1}.
 ```
 
-In general, when the variance is small, the characteristics represented by the variable are poor. In particular, if the variance is equal to zero, the variable can be ignored. However, since random noise also has a certain variance, a large variance does not necessarily mean that the variable represents features well.
+In general, when the variance is small, the characteristics represented by the variable are poor. In particular, if the variance is equal to zero, the variable can be ignored as a feature. However, since random noise also has a certain variance, a large variance does not necessarily mean that the variable represents features well.
 
 ### Covariance
 
@@ -84,7 +84,7 @@ $C$ is called the *covariance matrix* of $X$. Looking at the properties of the c
 
 ## Principal Component Analysis
 
-In the previous section, we obtained a covariance matrix $C$ that shows the association between each feature of the dataset $X$. We consider to obtain a projection from $X$ to a new variable such that the variance is maximized by a calculation using the covariance matrix $C$.
+In the previous section, we obtained a covariance matrix $C$ that shows the association between each feature of the dataset $X$. We consider to obtain a projection from $X$ to new variables such that the variance is maximized by calculations using the covariance matrix $C$.
 
 ### Simplified Computation of Covariance Matrix using Mean Centering
 
@@ -248,7 +248,7 @@ It can be seen that we are able to project the ALL and AML of the training datas
 
 While the number of genes in a gene expression dataset is high dimensional, it is not uncommon for the sample size to be an order of magnitude smaller due to the constraints of clinical research. In such cases, PCA, which extracts significant features by dimensionality reduction, is one of the effective methods.
 
-Later, this *feature extraction* was performed by neural networks, which is called *deep learning*. In particular, we note that PCA is equivalent to a linear *autoencoder*.
+Later, this *feature extraction* was performed by neural networks, which is a part of *deep learning*. In particular, we note that PCA is equivalent to a linear *autoencoder*.
 
 [^Pearson]: K. Pearson, *On lines and planes of closest fit to systems of points in space*, **Philosophical Magazine**, 2, 559-572, 1901.
 [^Golub]: T.R. Golub et al., *Molecular Classification of Cancer: Class Discovery and Class Prediction by Gene Expression Monitoring*, **Science**, 286, pp531-537, 1999.
