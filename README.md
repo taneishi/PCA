@@ -86,7 +86,7 @@ $C$ is called the *covariance matrix* of $X$. Looking at the properties of the c
 
 In the previous section, we obtained a covariance matrix $C$ that shows the association between each feature of the dataset $X$. We consider to obtain a projection from $X$ to new variables such that the variance is maximized by calculations using the covariance matrix $C$.
 
-### Simplified Computation of Covariance Matrix using Mean Centering
+### Simplified Computation of Covariance Matrix
 
 To simplify the calculation of covariance later, take the difference by the mean $\mu_i$ for each dimension $X_i$ of the dataset, and transform the dataset to have zero mean. This transformation is called *mean centering*. From the definition of covariance, the value does not depend on the mean of each dimension. Actually, let $X$ denote the original dataset and $X^{\prime}$ denote the dataset that has been centered by the mean, then $X^{\prime}_i = X_i - \mu_i$ for each dimension of the dataset, and the covariance is
 
@@ -106,14 +106,6 @@ and the covariance matrix $C$ is obtained by
 C = \frac{\prescript{t}{}{X} X}{N-1}.
 ```
 
-Actually calculating the covariance matrix of the centered dataset, we yield
-
-```math
-\mathrm{cov}(X) = \begin{pmatrix*}[r] 6.266 & -3.381 \\ -3.381 & 1.913 \end{pmatrix*}.
-```
-
-Since $\mathrm{var}(X_1) = 6.266$ and $\mathrm{var}(X_2) = 1.913$, each dimension has a certain variance, and since $\mathrm{cov}(X_1, X_2) = -3.381$, we see that these two dimensions have features that are shared in opposite directions. PCA represents these shared features as a single feature.
-
 ### Eigendecomposition of the Covariance Matrix
 
 The essential computation of PCA is the *eigendecomposition* of the covariance matrix $C$ of the dataset $X$. When the operation of a matrix on a vector does not change the vector except for multiples of the coefficients, the coefficients and vectors are called *eigenvalues* and *eigenvectors*. That is, let $\lambda_i$ be the eigenvalues and $e_i$ be the eigenvectors of the matrix $C$,
@@ -132,41 +124,9 @@ Let $\Lambda$ be a diagonal matrix whose diagonal components are the eigenvalues
 C = W \Lambda W^{-1}.
 ```
 
-Actually, calculating for the Pearson dataset, we yield
-
-```math
-e_1 = \begin{pmatrix} 0.878 & 0.479 \end{pmatrix}, \quad e_2 = \begin{pmatrix} -0.479 & 0.878 \end{pmatrix}.
-```
-
-Since $W$ is a matrix with eigenvector $e_i$ in the rows,
-
-```math
-W = \begin{pmatrix} e_1 \\ e_2 \end{pmatrix} = \begin{pmatrix*}[r] 0.878 & 0.479 \\ -0.479 & 0.878 \end{pmatrix*}.
-```
-
-$\Lambda$ is a matrix with diagonal components of eigenvalues corresponding to eigenvectors,
-
-```math
-\Lambda = \mathrm{diag}[\lambda_i] = \begin{pmatrix} 8.111 & 0 \\ 0 & 0.069 \end{pmatrix}.
-```
-
-Since $\prescript{t}{}{W} W = I$, we can use $W^{-1} = \prescript{t}{}{W}$ to calculate $W \Lambda W^{-1}$, which is equal to the covariance matrix $C$.
-
-```math
-W \Lambda W^{-1} = W \Lambda \prescript{t}{}{W} = \begin{pmatrix*}[r] 6.266 & -3.381 \\ -3.381 & 1.913 \end{pmatrix*} = C
-```
-
 The intuitive understanding of eigendecomposition of the covariance matrix is that by mapping the dimensions that share features onto an orthonormal basis, each dimension represents an independent feature.
 
 ### Projection
-
-In the case of a two-dimensional dataset, the PCA *projection* to the same two dimensions gives a coordinate transformation on the same plane. The coordinates of the centered Pearson dataset and the projected coordinates are shown in Figure 1.
-
-![Figure 1](figure/eigenvectors.png)
-
-**Figure 1. $X_1, X_2$ are the coordinates of the centered Pearson dataset and $Y_1, Y_2$ are the coordinates of the projected destination. The projection maximizes the variance in each dimension.**
-
-It can be seen that the variance of $Y_1$ is maximal, i.e., it captures the most significant features of the dataset. The new dimension obtained by the projection is also called *principal component*.
 
 The projection of the dataset is obtained by $T = X W$ using the matrix $W$ composed of eigenvectors. The ratio of the variance of the projected dimension to the sum of the variances of all dimensions is equal to the ratio of the corresponding eigenvalue $\lambda_i$ to the sum of eigenvalues. Therefore, by comparing $\lambda_i$, the projected features can be selected in order of increasing variance.
 
@@ -198,7 +158,7 @@ W = W[:, np.flip(np.argsort(L))]
 T = X * W
 ```
 
-By the way, the computational complexity of eigendecomposition of a square matrix of order $n$ should theoretically be close to $O(n^2)$, but in practice it is about $O(n^3)$ due to the calculation of the covariance matrix $C$ in advance. Therefore, PCA is mostly implemented in practical use using *singular value decomposition*, SVD, which has the computational complexity of $O(n^3)$.
+By the way, the computational complexity of eigendecomposition of a square matrix of order $n$ should theoretically be close to $O(n^2)$, but in practice it is about $O(n^3)$ due to the approximate calculation. Therefore, PCA is mostly implemented in practical use using *singular value decomposition*, SVD, which has the computational complexity of $O(n^3)$.
 
 The SVD for $X$ is given by
 
@@ -206,19 +166,19 @@ The SVD for $X$ is given by
 X = U \Sigma \prescript{t}{}{V}
 ```
 
-where $U$ is a square matrix of order $N$, $Sigma$ is a diagonal matrix with singular values as diagonal components, $V$ is a square matrix of order $n$, and $U$ and $V$ are orthogonal matrices. That is, $U^{-1} = \prescript{t}{}{U}$ and $V^{-1} = \prescript{t}{}{V}$. Also, $V$ corresponds to the matrix $W$ of eigenvectors in the eigendecomposition, except for the orientation. Thus the projection is given by $T = X V$.
+Here, $U$ is a square matrix of order $N$, $Sigma$ is a diagonal matrix with singular values as diagonal components, $V$ is a square matrix of order $n$, and $U$ and $V$ are orthogonal matrices. That is, $U^{-1} = \prescript{t}{}{U}$ and $V^{-1} = \prescript{t}{}{V}$. Also, $V$ corresponds to the matrix $W$ of eigenvectors in the eigendecomposition, except for the orientation. Thus the projection is given by $T = X V$.
 
 Since the the diagonal component of $\Sigma$ is the singular value $\sigma_i$ and $\prescript{t}{}{V} = V^{-1}$, it is easy to see that $X V = U \Sigma$. Therefore $U \Sigma$ can also be taken as the projection of the dataset. This is less computationally demanding, considering that $\Sigma$ is a diagonal matrix.
 
 ```python
 # Singular value decomposition.
-U, S, Vt = np.linalg.svd(X, full_matrices=False)
+U, S, Vt = np.linalg.svd(X)
 
 # Singular values are already sorted.
 assert np.allclose(S, np.flip(np.sort(S)))
 
 # Projected coodinates T = U * S.
-T = U * np.diag(S)
+T = U[:, :n] * np.diag(S)
 
 # U * S = X * V.
 T = X * Vt.T
@@ -231,6 +191,48 @@ The eigenvalue $e_i$ of the covariance matrix $C = \prescript{t}{}{X} X / (N-1)$
 ```
 
 Thus, the ratio of variance of the projected dimension can also be calculated from the singular values.
+
+### A Practical Example with Pearson Dataset
+
+Actually we will calculate for the Pearson dataset. Calculating the covariance matrix of the centered dataset, we yield
+
+```math
+\mathrm{cov}(X) = \begin{pmatrix*}[r] 6.266 & -3.381 \\ -3.381 & 1.913 \end{pmatrix*}.
+```
+
+Since $\mathrm{var}(X_1) = 6.266$ and $\mathrm{var}(X_2) = 1.913$, each dimension has a certain variance, and since $\mathrm{cov}(X_1, X_2) = -3.381$, we see that these two dimensions have features that are shared.
+
+Next, computing the eigenvectors, we yield
+
+```math
+e_1 = \begin{pmatrix} 0.878 & 0.479 \end{pmatrix}, \quad e_2 = \begin{pmatrix} -0.479 & 0.878 \end{pmatrix}.
+```
+
+Since $W$ is a matrix with eigenvector $e_i$ in the rows,
+
+```math
+W = \begin{pmatrix} e_1 \\ e_2 \end{pmatrix} = \begin{pmatrix*}[r] 0.878 & 0.479 \\ -0.479 & 0.878 \end{pmatrix*}.
+```
+
+$\Lambda$ is a matrix with diagonal components of eigenvalues corresponding to eigenvectors,
+
+```math
+\Lambda = \mathrm{diag}[\lambda_i] = \begin{pmatrix} 8.111 & 0 \\ 0 & 0.069 \end{pmatrix}.
+```
+
+Since $\prescript{t}{}{W} W = I$, we can use $W^{-1} = \prescript{t}{}{W}$ to calculate $W \Lambda W^{-1}$, and we can numerically confirm $C = W \Lambda W^{-1}$.
+
+```math
+W \Lambda W^{-1} = W \Lambda \prescript{t}{}{W} = \begin{pmatrix*}[r] 6.266 & -3.381 \\ -3.381 & 1.913 \end{pmatrix*} = C
+```
+
+Let $X$ be projected using the obtained $W$. In the case of a two-dimensional dataset, the PCA *projection* to the same two dimensions gives a coordinate transformation on the same plane. The coordinates of the centered Pearson dataset and the projected coordinates are shown in Figure 1.
+
+![Figure 1](figure/eigenvectors.png)
+
+**Figure 1. $X_1, X_2$ are the coordinates of the centered Pearson dataset and $Y_1, Y_2$ are the coordinates of the projected destination. The projection maximizes the variance in each dimension.**
+
+It can be seen that the variance of $Y_1$ is maximal, i.e., it captures the most significant features of the dataset. The new dimension obtained by the projection is also called *principal component*.
 
 ## Applications
 
