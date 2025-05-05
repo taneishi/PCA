@@ -138,7 +138,7 @@ The inverse transformation of the projection is given by $X = T W^{-1}$. Since $
 
 ## Implementation in Python
 
-Here we show an example of calculation using the Python numerical package `numpy`. As mentioned in the previous section, PCA calculation of is based on the eigendecomposition of a matrix.
+Here we show an example of calculation using the Python numerical package `numpy`. As mentioned in the previous section, PCA calculation is based on the eigendecomposition of a matrix.
 
 ```python
 # Mean centering.
