@@ -43,13 +43,17 @@ In preparation for the computation of PCA, we introduce the basic *statistics* t
 The variance is the sum of the squares of the distances from the mean averaged over $N-1$ for each dimension of the dataset. Let $\mu_i$ denote the mean of the vector $X_i$,
 
 ```math
+\begin{equation}
 \mu_i = \sum_{j=1}^N \frac{x_{j,i}}{N}
+\end{equation}
 ```
 
 and the variance of $X_i$ is defined as
 
 ```math
-\mathrm{var}(X_i) = \sum_{j=1}^N \frac{(x_{j,i}-\mu_i)^2}{N-1}.
+\begin{equation}
+(1) \quad \mathrm{var}(X_i) = \sum_{j=1}^N \frac{(x_{j,i}-\mu_i)^2}{N-1}.
+\end{equation}
 ```
 
 In general, when the variance is small, the characteristics represented by the variable are poor. In particular, if the variance is equal to zero, the variable can be ignored as a feature. However, since random noise also has a certain variance, a large variance does not necessarily mean that the variable represents features well.
@@ -59,7 +63,9 @@ In general, when the variance is small, the characteristics represented by the v
 Then we introduce *covariance* that evaluates the association between the dimensions of the dataset. The covariance of $X_i$ and $X_j$ is given by
 
 ```math
-\mathrm{cov}(X_i, X_j) = \sum_{k=1}^N \frac{(x_{k,i}-\mu_i)(x_{k,j}-\mu_j)}{N-1}.
+\begin{equation}
+(2) \quad \mathrm{cov}(X_i, X_j) = \sum_{k=1}^N \frac{(x_{k,i}-\mu_i)(x_{k,j}-\mu_j)}{N-1}.
+\end{equation}
 ```
 
 By definition, $\mathrm{cov}(X_i, X_j) = \mathrm{cov}(X_j, X_i)$. Also, $\mathrm{var}(X_i) = \mathrm{cov}(X_i, X_i)$, i.e. the variance can be regarded as the covariance within the same dimension.
@@ -74,10 +80,13 @@ Therefore, if the absolute value of the covariance of two dimensions are large, 
 
 ### Covariance Matrix
 
-We have considered the relationship between each feature, then we will turn to the entire dataset. That is, using the variances and covariances, we construct the matrix $C$ representing the variances and covariances among all vectors in $X$ as
+We have considered the relationship between each feature, then we will turn to the entire dataset.
+That is, using the variances and covariances defined in (1) and (2), we construct the matrix $C$ representing the variances and covariances among all vectors in $X$ as
 
 ```math
+\begin{equation}
 C = [\mathrm{cov}(X_i, X_j)].
+\end{equation}
 ```
 
 $C$ is called the *covariance matrix* of $X$. Looking at the properties of the covariance matrix, $C$ for a dataset defined in $n$ dimensions is a square matrix of order $n$, let $M_n(F)$ be the *full matrix ring* of order $n$ with the elements of the field $F$, where $C \in M_n(\mathbf{R})$. Since we have assumed to be $x_{i, j} \in \mathbf{R}$ about the dataset, $\mathrm{cov}(X_i, X_j) \in \mathbf{R}$ is almost obvious and we see that $C$ is a *real symmetric matrix* since $\mathrm{cov}(X_i, X_j) = \mathrm{cov}(X_j, X_i)$. In particular, for $i = j$, i.e., the diagonal component of $C$ are equal to the variance $\mathrm{var}(X_i)$ in each dimension.
@@ -88,22 +97,29 @@ In the previous section, we obtained a covariance matrix $C$ that shows the asso
 
 ### Simplified Computation of Covariance Matrix
 
-To simplify the calculation of covariance later, take the difference by the mean $\mu_i$ for each dimension $X_i$ of the dataset, and transform the dataset to have zero mean. This transformation is called *mean centering*. From the definition of covariance, the value does not depend on the mean of each dimension. Actually, let $X$ denote the original dataset and $X^{\prime}$ denote the dataset that has been centered by the mean, then $X^{\prime}_i = X_i - \mu_i$ for each dimension of the dataset, and the covariance is
+To simplify the calculation of covariance later, take the difference by the mean $\mu_i$ for each dimension $X_i$ of the dataset, and transform the dataset to have zero mean. This transformation is called *mean centering*.
+From the definition of covariance (2), the value does not depend on the mean of each dimension. Actually, let $X$ denote the original dataset and $X^{\prime}$ denote the dataset that has been centered by the mean, then $X^{\prime}_i = X_i - \mu_i$ for each dimension of the dataset, and the covariance is
 
 ```math
+\begin{equation}
 \mathrm{cov}(X_i, X_j) = \sum_{k=1}^N \frac{(x_{k, i}-\mu_i)(x_{k, j}-\mu_j)}{N-1} = \sum_{k=1}^N \frac{x^{\prime}_{k, i} x^{\prime}_{k, j}}{N-1} = \mathrm{cov}(X^{\prime}_i, X^{\prime}_j).
+\end{equation}
 ```
 
 Therefore, since $X$ and $X^{\prime}$ can be identified through the calculation of covariance, $X$ is treated below as a dataset centered by the mean. Then the calculation of covariance is simplified as
 
 ```math
+\begin{equation}
 \mathrm{cov}(X_i, X_j) = \sum_{k=1}^N \frac{x_{k, i} x_{k, j}}{N-1} = \frac{\prescript{t}{}{X_i} X_j}{N-1},
+\end{equation}
 ```
 
 and the covariance matrix $C$ is obtained by
 
 ```math
-C = \frac{\prescript{t}{}{X} X}{N-1}.
+\begin{equation}
+(3) \quad C = \frac{\prescript{t}{}{X} X}{N-1}.
+\end{equation}
 ```
 
 ### Eigendecomposition of the Covariance Matrix
@@ -111,7 +127,9 @@ C = \frac{\prescript{t}{}{X} X}{N-1}.
 The essential computation of PCA is the *eigendecomposition* of the covariance matrix $C$ of the dataset $X$. When the operation of a matrix on a vector does not change the vector except for multiples of the coefficients, the coefficients and vectors are called *eigenvalues* and *eigenvectors*. That is, let $\lambda_i$ be the eigenvalues and $e_i$ be the eigenvectors of the matrix $C$,
 
 ```math
+\begin{equation}
 C e_i = \lambda_{i} e_i.
+\end{equation}
 ```
 
 We mentioned that the covariance matrix $C$ is a real symmetric matrix. In this case, its eigenvalues are known to have values in the real number field, i.e., $\lambda_i \in \mathbf{R}$. This follows from the fact that a real symmetric matrix is a *Hermitian matrix*. In general, for a square matrix $A$ defined by the field $C$, let $\bar{A}$ be the conjugate of $A$, then $A$ is called a Hermitian matrix if $A = \prescript{t}{}{\bar{A}}$.
@@ -121,7 +139,9 @@ The eigenvectors of the Hermitian matrices are known to be orthogonal to each ot
 Let $\Lambda$ be a diagonal matrix whose diagonal components are the eigenvalues $\lambda_i$ corresponding to these eigenvectors $e_i$. Then $C$ can be represented using $\Lambda$ and $W$ as follows. This is the eigendecomposition of $C$.
 
 ```math
+\begin{equation}
 C = W \Lambda W^{-1}.
+\end{equation}
 ```
 
 The intuitive understanding of eigendecomposition of the covariance matrix is that by mapping the dimensions that share features onto an orthonormal basis, each dimension represents an independent feature.
@@ -131,7 +151,9 @@ The intuitive understanding of eigendecomposition of the covariance matrix is th
 The projection of the dataset is obtained by $T = X W$ using the matrix $W$ composed of eigenvectors. The ratio of the variance of the projected dimension to the sum of the variances of all dimensions is equal to the ratio of the corresponding eigenvalue $\lambda_i$ to the sum of eigenvalues. Therefore, by comparing $\lambda_i$, the projected features can be selected in order of increasing variance.
 
 ```math
+\begin{equation}
 \frac{\mathrm{var}(Y_i)}{\sum_{i=1}^n \mathrm{var}(Y_i)} =  \frac{\lambda_i}{\sum_{i=1}^n \lambda_i} = \frac{\lambda_i}{\mathrm{tr}(\Lambda)}
+\end{equation}
 ```
 
 The inverse transformation of the projection is given by $X = T W^{-1}$. Since $W^{-1} = \prescript{t}{}{W}$, $X$ is also obtained as $X = T \prescript{t}{}{W}$. As $X$ is centered by the mean, the original data can be restored by adding the mean of the original dataset to $X$.
@@ -163,7 +185,9 @@ By the way, the computational complexity of eigendecomposition of a square matri
 The SVD for $X$ is given by
 
 ```math
+\begin{equation}
 X = U \Sigma \prescript{t}{}{V}
+\end{equation}
 ```
 
 Here, $U$ is a square matrix of order $N$, $Sigma$ is a diagonal matrix with singular values as diagonal components, $V$ is a square matrix of order $n$, and $U$ and $V$ are orthogonal matrices. That is, $U^{-1} = \prescript{t}{}{U}$ and $V^{-1} = \prescript{t}{}{V}$. Also, $V$ corresponds to the matrix $W$ of eigenvectors in the eigendecomposition, except for the orientation. Thus the projection is given by $T = X V$.
@@ -187,17 +211,21 @@ T = X * Vt.T
 The eigenvalue $e_i$ of the covariance matrix $C = \prescript{t}{}{X} X / (N-1)$ and the singular value $\sigma_i$ of $X$ are in the relation $e_i = \lambda_i^2 / (N-1)$. In fact, if we take the singular value decomposition of $X$ so that $V = W$, then
 
 ```math
+\begin{equation}
 \prescript{t}{}{X} X = \prescript{t}{}{(U \Sigma \prescript{t}{}{W})} U \Sigma \prescript{t}{}{W} = W (\Sigma^2) \prescript{t}{}{W} = (N-1) W \Lambda \prescript{t}{}{W}.
+\end{equation}
 ```
 
 Thus, the ratio of variance of the projected dimension can also be calculated from the singular values.
 
 ### A Practical Example with Pearson Dataset
 
-Actually we will calculate for the Pearson dataset. Calculating the covariance matrix of the centered dataset, we yield
+Actually we will calculate for the Pearson dataset. Calculating the covariance matrix of the centered dataset using the equation (3), we yield
 
 ```math
+\begin{equation}
 \mathrm{cov}(X) = \begin{pmatrix*}[r] 6.266 & -3.381 \\ -3.381 & 1.913 \end{pmatrix*}.
+\end{equation}
 ```
 
 Since $\mathrm{var}(X_1) = 6.266$ and $\mathrm{var}(X_2) = 1.913$, each dimension has a certain variance, and since $\mathrm{cov}(X_1, X_2) = -3.381$, we see that these two dimensions have features that are shared.
@@ -205,25 +233,33 @@ Since $\mathrm{var}(X_1) = 6.266$ and $\mathrm{var}(X_2) = 1.913$, each dimensio
 Next, computing the eigenvectors, we yield
 
 ```math
+\begin{equation}
 e_1 = \begin{pmatrix} 0.878 & 0.479 \end{pmatrix}, \quad e_2 = \begin{pmatrix} -0.479 & 0.878 \end{pmatrix}.
+\end{equation}
 ```
 
 Since $W$ is a matrix with eigenvector $e_i$ in the rows,
 
 ```math
+\begin{equation}
 W = \begin{pmatrix} e_1 \\ e_2 \end{pmatrix} = \begin{pmatrix*}[r] 0.878 & 0.479 \\ -0.479 & 0.878 \end{pmatrix*}.
+\end{equation}
 ```
 
 $\Lambda$ is a matrix with diagonal components of eigenvalues corresponding to eigenvectors,
 
 ```math
+\begin{equation}
 \Lambda = \mathrm{diag}[\lambda_i] = \begin{pmatrix} 8.111 & 0 \\ 0 & 0.069 \end{pmatrix}.
+\end{equation}
 ```
 
 Since $\prescript{t}{}{W} W = I$, we can use $W^{-1} = \prescript{t}{}{W}$ to calculate $W \Lambda W^{-1}$, and we can numerically confirm $C = W \Lambda W^{-1}$.
 
 ```math
+\begin{equation}
 W \Lambda W^{-1} = W \Lambda \prescript{t}{}{W} = \begin{pmatrix*}[r] 6.266 & -3.381 \\ -3.381 & 1.913 \end{pmatrix*} = C
+\end{equation}
 ```
 
 Let $X$ be projected using the obtained $W$. In the case of a two-dimensional dataset, the PCA *projection* to the same two dimensions gives a coordinate transformation on the same plane. The coordinates of the centered Pearson dataset and the projected coordinates are shown in Figure 1.
